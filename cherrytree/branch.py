@@ -85,6 +85,7 @@ class CherryTreeBranch:
                     commits[pr_number] = commit
         if skipped_commits:
             # Note: merge commits and direct pushes without PR references are skipped here
+            # TODO: consider adding an option to include commits without PR references
             click.secho(
                 f"{skipped_commits} commits skipped due to missing PRs", fg="yellow"
             )
@@ -96,7 +97,4 @@ class CherryTreeBranch:
             new_prs = get_issues_from_labels(
                 repo=self.repo,
                 access_token=self.access_token,
-                label=label,
-                prs_only=True,
-            )
-            click.secho(f' 
+           
