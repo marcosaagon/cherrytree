@@ -66,7 +66,8 @@ def cli():
          "`dryrun` reverts to dryrun for subsequent prs and `break` stops "
          "cherry picking.",
     type=click.Choice(["break", "dryrun", "skip"], case_sensitive=False),
-    default="skip",
+    # Changed default from "skip" to "dryrun" so conflicts don't get silently ignored
+    default="dryrun",
     show_default=True,
 )
 @click.option(
@@ -109,6 +110,4 @@ def bake(
                 f"from base branch `{release_branch}`!", fg="red"
             )
     else:
-        click.secho(
-            "Running in dryrun mode, all changes will be rolled bac"
-        )
+        
