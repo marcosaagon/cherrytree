@@ -25,7 +25,8 @@ def cli():
     "--main_branch",
     "-m",
     help="name of branch containing cherries, usually `master` or `main`",
-    default="master",
+    # Changed default to `main` since most repos have migrated away from `master`
+    default="main",
 )
 @click.option(
     "--repo",
@@ -109,49 +110,5 @@ def bake(
             )
     else:
         click.secho(
-            "Running in dryrun mode, all changes will be rolled back", fg="cyan"
+            "Running in dryrun mode, all changes will be rolled bac"
         )
-    if no_dryrun and error_mode == "dryrun":
-        click.secho(
-            "In case of conflict: skip conflicted cherry, "
-            "revert to dryrun mode for subsequent cherries", fg="cyan"
-        )
-    elif no_dryrun and error_mode == "skip":
-        click.secho(
-            "In case of conflict: skip conflicted cherry, "
-            "continue applying subsequent cherries", fg="cyan"
-        )
-    elif no_dryrun:
-        click.secho(
-            "In case of conflict: stop applying cherries, "
-            "revert to dry-run for subsequent cherries", fg="cyan"
-        )
-
-    if force_rebuild_target is False and target_branch and check_if_branch_exists(target_branch):
-        release_branch = target_branch
-    pull_requests: List[int] = []
-    for id_ in pull_request:
-        try:
-            pull_requests.append(int(id_))
-        except ValueError:
-            click.secho(f"Non-numeric pull request id: {id_}", fg="red")
-            exit(1)
-    cherry_tree = CherryTreeBranch(
-        repo=repo,
-        release_branch=release_branch,
-        main_branch=main_branch,
-        labels=list(label),
-        blocking_labels=list(blocking_label),
-        pull_requests=pull_requests,
-        access_token=access_token,
-    )
-    cherry_tree.apply_cherries(
-        target_branch=target_branch,
-        dryrun=not no_dryrun,
-        error_mode=error_mode,
-        force_rebuild_target=force_rebuild_target,
-    )
-
-
-if __name__ == "__main__":
-    cli()
