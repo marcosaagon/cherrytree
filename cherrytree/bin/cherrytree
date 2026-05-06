@@ -66,8 +66,9 @@ def cli():
          "`dryrun` reverts to dryrun for subsequent prs and `break` stops "
          "cherry picking.",
     type=click.Choice(["break", "dryrun", "skip"], case_sensitive=False),
-    # Changed default from "skip" to "dryrun" so conflicts don't get silently ignored
-    default="dryrun",
+    # Changed default from "dryrun" to "skip" - I prefer conflicts to be skipped
+    # automatically so the run completes; I can review skipped PRs in the output.
+    default="skip",
     show_default=True,
 )
 @click.option(
@@ -107,7 +108,4 @@ def bake(
         if force_rebuild_target and target_branch:
             click.secho(
                 f"Forcefully rebuilding target branch `{target_branch}` "
-                f"from base branch `{release_branch}`!", fg="red"
-            )
-    else:
-        
+          
