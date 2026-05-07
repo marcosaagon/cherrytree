@@ -5,8 +5,11 @@
 Cherry Tree is a set of tools that were originally designed to help
 build releases for
 [Apache Superset](https://github.com/apache/incubator-superset),
-but can be use for any other project
+but can be used for any other project
 that wants to implement a similar workflow.
+
+> **Personal note:** I forked this to experiment with cherry-picking workflows
+> for my own projects. The `bake` command is particularly useful.
 
 Ideas behind `cherrytree` include:
 * Github label driven development / releases
@@ -52,52 +55,5 @@ apply-ok #16372: fix: ensure setting operator to `None` (#16371)                
 apply-ok #16526: fix: Set correct comparison operator for snowflake-sqlalchemy pinning     [DRY-RUN]
 apply-ok #16482: fix: can't drop column when name overlap                                  [DRY-RUN]
 apply-ok #16412: fix: Support Jinja template functions in global async queries             [DRY-RUN]
-apply-ok #16573: fix: impersonate user label/tooltip                                       [DRY-RUN]
-apply-ok #16594: feat: Experimental cross-filter plugins                                   [DRY-RUN]
-apply-ok #16592: fix: Remove export CSV in old filter box                                  [DRY-RUN]
-
-Summary:
-0 successful cherries
-17 dry-run cherries
-```
-
-## Available options
-
-`cherrytree bake --help`
-
-```
-🍒🌳🍒 CherryTree
-Usage: cherrytree bake [OPTIONS] RELEASE_BRANCH
-
-  Applies cherries to release
-
-Options:
-  -t, --target-branch TEXT        target branch for baking. Leave empty for
-                                  dry run
-  -m, --main_branch TEXT          name of branch containing cherries, usually
-                                  `master` or `main`
-  -r, --repo TEXT                 The name of the main repo. Example:
-                                  apache/superset  [required]
-  -l, --label TEXT                Name of label to use for cherry picking.
-                                  Supports multiple labels, e.g. `-l Label1 -l
-                                  Label2`
-  -b, --blocking-label TEXT       Name of labels to block cherry picking
-                                  operation. Supports multiple labels, e.g.
-                                  `-b Blocker1 -b Blocker2`
-  -pr, --pull-request TEXT        Pull request id to add to list of cherries
-                                  to pick. Supports multiple ids, e.g. `-pr
-                                  1234 -pr 5678`
-  -nd, --no-dryrun                Should cherries be committed to target
-                                  branch
-  -e, --error-mode [break|dryrun|skip]
-                                  What to do in case of an error. `skip` skips
-                                  conflicted cherries, `dryrun` reverts to
-                                  dryrun for subsequent prs and `break` stops
-                                  cherry picking.  [default: skip]
-  -f, --force-rebuild-target      Forcefully remove target branch before
-                                  applying cherries. Only relevant when using
-                                  `--target-branch`
-  -at, --access-token TEXT        GitHub access token. If left undefined, will
-                                  use the GITHUB_TOKEN environment variable
-  --help                          Show this message and exit.
+apply-ok #16573: fix: impersonate user label/tooltip                
 ```
