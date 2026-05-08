@@ -83,66 +83,6 @@ class CherryTree:
         """
         if self.dry_run:
             logger.info(
-                "[dry-run] Would cherry-pick %s onto %s", commit_sha[:8], target.name
+                "[dry-run] Would cherry-pick %s onto %s", commit_sha, target.name
             )
             return True
-
-        try:
-            # Checkout the target branch
-            subprocess.run(
-                ["git", "checkout", target.name], capture_output=True, check=True
-            )
-            # Perform the cherry-pick
-            subprocess.run(
-                ["git", "cherry-pick", commit_sha], capture_output=True, check=True
-            )
-            logger.info("Cherry-picked %s onto %s", commit_sha[:8], target.name)
-            return True
-        except subprocess.CalledProcessError as exc:
-            logger.error(
-                "Failed to cherry-pick %s onto %s: %s",
-                commit_sha[:8],
-                target.name,
-                exc.stderr.decode() if exc.stderr else str(exc),
-            )
-            # Abort the failed cherry-pick to restore clean state
-            subprocess.run(["git", "cherry-pick", "--abort"], capture_output=True)
-            return False
-
-    def bake(self, since: Optional[str] = None) -> dict:
-        """Execute the cherry-pick process across all target branches.
-
-        Args:
-            since: Optional ref to use as the starting point for commit selection.
-
-        Returns:
-            A summary dict mapping branch names to lists of applied commit SHAs.
-        """
-        commits = self.get_commits(since=since)
-        if not commits:
-            logger.info("No commits found on %s", self.source_branch.name)
-            return {}
-
-        logger.info(
-            "Found %d commit(s) to cherry-pick onto %d branch(es)",
-            len(commits),
-            len(self.target_branches),
-        )
-
-        summary: dict = {branch.name: [] for branch in self.target_branches}
-
-        for target in self.target_branches:
-            for sha in commits:
-                success = self.cherry_pick(sha, target)
-                if success:
-                    summary[target.name].append(sha)
-
-            if self.auto_push and not self.dry_run and summary[target.name]:
-                logger.info("Pushing %s to %s", target.name, self.remote)
-                subprocess.run(
-                    ["git", "push", self.remote, target.name],
-                    capture_output=True,
-                    check=True,
-                )
-
-        return summary
