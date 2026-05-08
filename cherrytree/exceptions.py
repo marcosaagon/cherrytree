@@ -76,7 +76,11 @@ class InvalidConfigError(CherryTreeError):
 
 
 class RepositoryError(CherryTreeError):
-    """Raised when there is a problem accessing or interacting with the git repository."""
+    """Raised when there is a problem accessing or interacting with the git repository.
+
+    Note: repo_path should be an absolute path when possible, to make the error
+    message easier to debug when running from different working directories.
+    """
 
     def __init__(self, repo_path: str = "", reason: str = ""):
         self.repo_path = repo_path
