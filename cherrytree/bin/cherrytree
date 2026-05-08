@@ -78,7 +78,9 @@ def cli():
     help="Forcefully remove target branch before applying cherries. Only relevant "
          "when using `--target-branch`",
     show_default=True,
-    default=False,
+    # Changed default to True - I almost always want a clean target branch rebuild
+    # when I'm running bake, avoids stale state from previous runs.
+    default=True,
 )
 @click.option(
     "--access-token",
@@ -107,5 +109,4 @@ def bake(
         )
         if force_rebuild_target and target_branch:
             click.secho(
-                f"Forcefully rebuilding target branch `{target_branch}` "
-          
+         
