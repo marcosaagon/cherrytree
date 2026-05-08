@@ -26,6 +26,10 @@ from cherrytree.classes import (
 SHORT_SHA_LEN = 12
 TMP_BRANCH = "__tmp_branch"
 
+# Default number of commits to look back when iterating branch history.
+# Increase this if your release branch has a long history and some PRs are missed.
+MAX_COMMITS = 2000
+
 
 class CherryTreeBranch:
     """Represents a release branch"""
@@ -77,7 +81,7 @@ class CherryTreeBranch:
         for branch in (self.main_branch, self.release_branch):
             commits = OrderedDict()
             self.branch_commits[branch] = commits
-            for commit in self.git_repo.iter_commits(branch):
+            for commit in self.git_repo.iter_commits(branch, max_count=MAX_COMMITS):
                 pr_number = commit_pr_number(commit)
                 if pr_number is None:
                     skipped_commits += 1
@@ -95,6 +99,4 @@ class CherryTreeBranch:
         for label in self.labels:
             click.secho(f'Fetching labeled PRs: "{label}"', fg="cyan", nl=False)
             new_prs = get_issues_from_labels(
-                repo=self.repo,
-                access_token=self.access_token,
-           
+    
