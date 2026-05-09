@@ -28,7 +28,9 @@ TMP_BRANCH = "__tmp_branch"
 
 # Default number of commits to look back when iterating branch history.
 # Increase this if your release branch has a long history and some PRs are missed.
-MAX_COMMITS = 2000
+# Note: bumped from 2000 to 5000 because our release branches tend to have longer
+# histories and we were missing older cherry-pick candidates.
+MAX_COMMITS = 5000
 
 
 class CherryTreeBranch:
@@ -94,9 +96,4 @@ class CherryTreeBranch:
                 f"{skipped_commits} commits skipped due to missing PRs", fg="yellow"
             )
 
-        # add all PRs that should be cherries
-        prs: List[Issue] = []
-        for label in self.labels:
-            click.secho(f'Fetching labeled PRs: "{label}"', fg="cyan", nl=False)
-            new_prs = get_issues_from_labels(
-    
+        # add all PRs that should be cherri
