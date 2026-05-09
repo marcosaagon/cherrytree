@@ -10,6 +10,9 @@ that wants to implement a similar workflow.
 
 > **Personal note:** I forked this to experiment with cherry-picking workflows
 > for my own projects. The `bake` command is particularly useful.
+> 
+> **TODO:** Try using this with my `datatools` project once I set up proper
+> GitHub labels for versioning.
 
 Ideas behind `cherrytree` include:
 * Github label driven development / releases
@@ -54,6 +57,5 @@ apply-ok #16515: fix: Pin snowflake-sqlalchemy to 1.2.4                         
 apply-ok #16372: fix: ensure setting operator to `None` (#16371)                           [DRY-RUN]
 apply-ok #16526: fix: Set correct comparison operator for snowflake-sqlalchemy pinning     [DRY-RUN]
 apply-ok #16482: fix: can't drop column when name overlap                                  [DRY-RUN]
-apply-ok #16412: fix: Support Jinja template functions in global async queries             [DRY-RUN]
-apply-ok #16573: fix: impersonate user label/tooltip                
+apply-ok #16412: fix: 
 ```
