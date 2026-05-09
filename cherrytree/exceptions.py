@@ -88,8 +88,8 @@ class RepositoryError(CherryTreeError):
         if repo_path:
             message = f"Repository error at '{repo_path}'."
         else:
-            # No path provided — give a generic but still actionable message
-            message = "Repository error: could not access the git repository."
+            # Generic fallback when no path is provided (e.g. repo not yet initialised)
+            message = "Repository error: no path specified."
         if reason:
             message += f" Reason: {reason}"
         super().__init__(message)
